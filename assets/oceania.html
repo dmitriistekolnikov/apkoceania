@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030914">
+<title>OceaniaVPN — premium UI</title>
+<style>
+:root{
+  --bg:#020711;--bg2:#061427;--card:#07172b;--card2:#0a1e37;
+  --text:#f5f9ff;--muted:#7187a5;--dim:#526985;--blue:#2088ff;
+  --cyan:#42dcff;--line:#173452;--good:#39e59a;--danger:#ff6d7d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;background:
+  radial-gradient(ellipse 80% 38% at 50% -3%,#104d86 0,#082448 35%,transparent 72%),
+  radial-gradient(circle at 85% 45%,#073d71 0,transparent 30%),
+  var(--bg);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);-webkit-tap-highlight-color:transparent;
+}
+button{font:inherit}
+.app{width:min(100%,480px);margin:auto;padding:22px 18px calc(34px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.brand{display:flex;gap:13px;align-items:center}
+.brand b{font-size:23px;letter-spacing:-.7px}
+.brand span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.icon{
+  width:48px;height:48px;border-radius:16px;border:1px solid #31506d;
+  background:#07172a;color:#f7fbff;display:grid;place-items:center;font-size:21px;
+  cursor:pointer;box-shadow:0 10px 30px #0005;transition:.2s;
+}
+.icon:hover{border-color:#4baeff;transform:translateY(-1px);box-shadow:0 12px 35px #1689ff25}
+.hero{text-align:center;padding-top:10px}
+.tiny{font-size:12px;letter-spacing:2px;color:#7890ad;font-weight:650}
+.tiny.connected{color:#5ce4ad}
+.ocean{
+  height:285px;position:relative;margin:2px -12px 0;display:grid;place-items:center;overflow:visible;
+}
+.wave{
+  position:absolute;width:370px;height:175px;border-radius:50%;
+  border:1px solid #2389ff2e;transform:rotate(-7deg);
+  animation:orbit 7s linear infinite;
+}
+.wave:nth-child(2){width:315px;height:145px;border-color:#42dcff30;animation-duration:5.5s;animation-direction:reverse}
+.wave:nth-child(3){width:425px;height:210px;border-color:#1764c523;animation-duration:9s}
+@keyframes orbit{from{transform:rotate(-7deg) rotate(0deg)}to{transform:rotate(-7deg) rotate(360deg)}}
+.core-wrap{position:relative;width:230px;height:230px;display:grid;place-items:center}
+.core{
+  position:relative;width:196px;height:196px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 40%,#124577 0,#0a2a4c 52%,#061528 53%);
+  border:1px solid #319cff;
+  box-shadow:0 0 0 10px #061326,0 0 0 11px #0c365c,0 0 85px #1689ff36,inset 0 0 42px #1c8cff20;
+}
+.core:before,.core:after{
+  content:"";position:absolute;inset:8px;border-radius:50%;border:1px solid #42c8ff32;
+}
+.core:before{border-right-color:#4ad9ff;animation:spin 11s linear infinite}
+.core:after{inset:18px;border-left-color:#2c8fff55;animation:spinReverse 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinReverse{to{transform:rotate(-360deg)}}
+.core button{
+  width:132px;height:132px;border-radius:50%;border:1px solid #81ddff;
+  background:radial-gradient(circle at 35% 22%,#63e4ff 0,#249dff 42%,#1067dc 72%,#0b4db8 100%);
+  color:white;box-shadow:0 14px 55px #087cff70,inset 0 2px 13px #fff5;
+  cursor:pointer;transition:.22s;display:grid;place-items:center;align-content:center;gap:5px;
+}
+.core button:hover{transform:scale(1.045);box-shadow:0 16px 70px #087cff90,inset 0 2px 15px #fff6}
+.core button:active{transform:scale(.965)}
+.power-symbol{
+  position:relative;width:38px;height:38px;display:block;border:4px solid rgba(255,255,255,.96);
+  border-top-color:transparent;border-radius:50%;filter:drop-shadow(0 0 5px rgba(255,255,255,.18));
+}
+.power-symbol:before{
+  content:"";position:absolute;left:50%;top:-7px;transform:translateX(-50%);
+  width:4px;height:22px;border-radius:4px;background:#fff;
+  box-shadow:0 0 5px rgba(255,255,255,.18);
+}
+.core button small{font-size:9px;letter-spacing:3.2px;font-weight:800;opacity:.92}
+.sync-mini{
+  position:absolute;left:calc(50% + 125px);top:50%;transform:translateY(-50%);
+  width:54px;height:54px;border-radius:18px;
+  border:1px solid #496987;background:#071a30;color:#70cfff;font-size:25px;cursor:pointer;
+  box-shadow:0 12px 30px #0007;transition:.25s;z-index:4;display:grid;place-items:center;
+}
+.sync-mini span{display:block;line-height:1}
+.sync-mini:hover{transform:translateY(-50%) scale(1.06);border-color:#4fc4ff;background:#0a2845}
+.sync-mini.spinning{animation:syncSpin .7s ease}
+@keyframes syncSpin{50%{transform:translateY(-50%) rotate(180deg) scale(1.06)}100%{transform:translateY(-50%) rotate(360deg)}}
+.live{
+  position:absolute;bottom:3px;display:flex;gap:8px;align-items:center;
+  font-size:13px;color:#7890ad;
+}
+.pulse{width:8px;height:8px;background:var(--blue);border-radius:50%;box-shadow:0 0 15px var(--blue)}
+.pulse.on{background:var(--good);box-shadow:0 0 15px var(--good)}
+.hero h1{font-size:31px;letter-spacing:-1px;margin:10px 0 4px}
+.hero p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.card{
+  position:relative;background:linear-gradient(145deg,#0a1d34e8,#061326e8);
+  border:1px solid #193b5c;border-radius:22px;padding:17px;margin-bottom:13px;
+  box-shadow:0 16px 45px #0004;overflow:hidden;
+}
+.card:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(110deg,#ffffff05,transparent 40%,#2389ff05);
+}
+.unique{border-color:#28557d}
+.unique:after{
+  content:"";position:absolute;width:220px;height:220px;right:-100px;top:-125px;
+  background:#1689ff1c;border-radius:50%;filter:blur(20px);
+}
+.unique-head{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}
+.label{font-size:10px;color:#6f87a3;letter-spacing:1.8px;margin-bottom:8px}
+.unique-title{font-size:18px;font-weight:760;letter-spacing:-.25px}
+.signal{display:flex;gap:4px;align-items:end;height:22px}
+.bar{width:5px;border-radius:4px;background:#2b91ef;box-shadow:0 0 8px #2088ff44}
+.bar:nth-child(1){height:7px}.bar:nth-child(2){height:12px}.bar:nth-child(3){height:17px}.bar:nth-child(4){height:22px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;position:relative;z-index:1}
+.stat{padding:12px;border-radius:14px;background:#041124c9;border:1px solid #102a46}
+.stat b{font-size:16px}.stat span{display:block;color:#6d819c;font-size:9px;letter-spacing:.3px;margin-top:4px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.name{font-size:15px;font-weight:760}.meta{font-size:12px;color:var(--muted);margin-top:5px}
+.badge{padding:7px 10px;border-radius:11px;background:#0a3157;color:#69c9ff;font-size:10px;border:1px solid #154b78}
+.selected{border-color:#2678c2;box-shadow:0 0 0 1px #247ed033,0 18px 50px #006eff12}
+.servers{display:grid;gap:9px}.section{font-size:15px;font-weight:800;margin:21px 2px 10px}
+.server{cursor:pointer;transition:.2s}.server:hover{transform:translateY(-2px);border-color:#2d6d9f}
+.server.active{border-color:#287dcc}
+.connection-note{
+  display:flex;align-items:center;justify-content:center;gap:8px;color:#5f7895;font-size:10px;
+  margin:18px 0 2px;text-align:center;
+}
+.connection-note .dot{width:6px;height:6px;border-radius:50%;background:#2d9cff;box-shadow:0 0 10px #2d9cff}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+  background:#0b2542f5;border:1px solid #28669d;padding:11px 15px;border-radius:14px;
+  font-size:12px;display:none;white-space:nowrap;z-index:50;box-shadow:0 15px 45px #0008;
+}
+.modal{
+  position:fixed;inset:0;background:#000b;backdrop-filter:blur(13px);
+  display:none;align-items:flex-end;justify-content:center;z-index:40;padding:14px;
+}
+.modal.show{display:flex}
+.sheet{
+  width:min(480px,100%);max-height:min(720px,88vh);overflow:auto;
+  background:linear-gradient(155deg,#0b2039,#061326);
+  border:1px solid #284b6d;border-radius:26px;padding:20px;
+  box-shadow:0 -10px 90px #1689ff18,0 25px 100px #000c;
+  animation:sheetIn .25s ease;
+}
+@keyframes sheetIn{from{transform:translateY(35px);opacity:0}to{transform:none;opacity:1}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.sheet h2{margin:0;font-size:22px;letter-spacing:-.5px}
+.close{
+  width:38px;height:38px;border-radius:12px;border:1px solid #24445f;
+  background:#07172a;color:#a7bbd0;cursor:pointer;font-size:20px;
+}
+.setting-group{margin-top:17px}
+.setting-label{font-size:10px;letter-spacing:1.5px;color:#637c98;margin:0 2px 8px}
+.setting{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:14px 13px;border:1px solid #16344f;background:#07172a;border-radius:15px;margin-bottom:7px;
+}
+.setting strong{display:block;font-size:13px}.setting small{display:block;color:#647b96;font-size:10px;margin-top:3px;line-height:1.35}
+.toggle{
+  flex:none;width:46px;height:26px;border-radius:99px;border:1px solid #34516b;background:#102238;
+  padding:2px;cursor:pointer;transition:.2s;
+}
+.toggle i{display:block;width:20px;height:20px;border-radius:50%;background:#72859b;transition:.2s}
+.toggle.on{background:#0d5e8f;border-color:#36bfff}
+.toggle.on i{transform:translateX(20px);background:#fff;box-shadow:0 0 12px #42dcff}
+.select{
+  width:100%;appearance:none;border:1px solid #173a58;background:#07172a;color:#e9f4ff;
+  border-radius:14px;padding:13px;font-size:12px;outline:none;
+}
+.sheet-foot{color:#506983;font-size:9px;text-align:center;margin:16px 0 0}
+
+.core-card{margin-top:10px;border-color:#214f76;background:linear-gradient(145deg,#071a30,#041021);overflow:hidden;position:relative}
+.core-card:before{content:"";position:absolute;inset:-70px auto auto -60px;width:180px;height:180px;border-radius:50%;background:#1689ff16;filter:blur(24px)}
+.core-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;position:relative;z-index:1}
+.core-item{padding:11px 12px;border:1px solid #123450;background:#061427d9;border-radius:13px;min-width:0}
+.core-item span{display:block;color:#5f7894;font-size:8px;letter-spacing:1.2px;margin-bottom:5px}
+.core-item b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.core-status{display:flex;align-items:center;gap:7px}
+.core-status i{width:7px;height:7px;border-radius:50%;background:#72859b;box-shadow:0 0 0 transparent;transition:.2s}
+.core-status.on i{background:#35d59a;box-shadow:0 0 12px #35d59a88}
+.core-status.connecting i{background:#ffd15a;box-shadow:0 0 12px #ffd15a66;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.35}}
+.core-actions{display:flex;gap:8px;margin-top:10px;position:relative;z-index:1}
+.core-action{flex:1;padding:11px;border-radius:12px;border:1px solid #194565;background:#071b2f;color:#9ec8e8;font-size:10px;font-weight:700;cursor:pointer}
+.core-action:active{transform:scale(.98)}
+@media(max-width:390px){
+  .app{padding-left:14px;padding-right:14px}
+  .sync-mini{left:calc(50% + 108px);width:50px;height:50px}.core{width:182px;height:182px}.core button{width:122px;height:122px}.power-symbol{width:34px;height:34px}
+  .ocean{height:270px}.unique-title{font-size:16px}
+}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+  <div class="brand">
+    <div><b>OceaniaVPN</b><span>Private ocean network</span></div>
+  </div>
+  <button class="icon" id="settings" aria-label="Настройки">⚙</button>
+</header>
+
+<section class="hero">
+  <div class="tiny" id="status">СЕТЬ ГОТОВА</div>
+  <div class="ocean">
+    <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+    <div class="core-wrap">
+      <div class="core">
+        <button id="power" aria-label="Подключить VPN">
+          <span class="power-symbol" aria-hidden="true"></span><small>CONNECT</small>
+        </button>
+      </div>
+    </div>
+    <button class="sync-mini" id="refresh" aria-label="Обновить маршрут" title="Обновить маршрут"><span aria-hidden="true">↻</span></button>
+    <div class="live"><i class="pulse" id="pulse"></i><span id="liveText">Волна ожидает подключения</span></div>
+  </div>
+  <h1 id="headline">Твоя волна</h1>
+  <p id="sub">OceaniaVPN найдёт лучший маршрут до выбранного сервера</p>
+</section>
+
+<div class="card unique">
+  <div class="unique-head">
+    <div><div class="label">OCEAN ROUTE</div><div class="unique-title" id="route">Amsterdam → Warsaw → You</div></div>
+    <div class="signal"><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="ping">42 ms</b><span>ЗАДЕРЖКА</span></div>
+    <div class="stat"><b id="traffic">1.2 GB</b><span>ЗАЩИЩЕНО</span></div>
+    <div class="stat"><b>99.9%</b><span>СТАБИЛЬНОСТЬ</span></div>
+  </div>
+</div>
+
+<div class="card core-card">
+  <div class="unique-head">
+    <div><div class="label">XRAY CORE</div><div class="unique-title">Ядро туннеля</div></div>
+    <div class="core-status" id="coreStatus"><i></i><span id="coreState">OFFLINE</span></div>
+  </div>
+  <div class="core-grid">
+    <div class="core-item"><span>VERSION</span><b id="coreVersion">—</b></div>
+    <div class="core-item"><span>ENGINE</span><b>libXray</b></div>
+    <div class="core-item"><span>TRANSPORT</span><b id="coreTransport">Auto</b></div>
+    <div class="core-item"><span>TUN</span><b id="tunState">READY</b></div>
+  </div>
+  <div class="core-actions">
+    <button class="core-action" id="coreInfo">Проверить ядро</button>
+    <button class="core-action" id="coreSettings">Настройки Android</button>
+  </div>
+</div>
+
+<div class="card server selected active" id="selected">
+  <div class="label">СЕЙЧАС ВЫБРАН</div>
+  <div class="row">
+    <div><div class="name" id="selName">🇳🇱 Amsterdam</div><div class="meta" id="selMeta">VLESS · 42 ms</div></div>
+    <span class="badge">AUTO</span>
+  </div>
+</div>
+
+<div class="section">Серверы из подписки</div>
+<section class="servers" id="serverList"></section>
+
+<div class="connection-note"><span class="dot"></span><span>Автоматический маршрут · защита включится одним касанием</span></div>
+</main>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="sheet-head">
+      <h2 id="settingsTitle">Настройки</h2>
+      <button class="close" id="closeModal" aria-label="Закрыть">×</button>
+    </div>
+
+    <div class="setting-group">
+      <div class="setting-label">ПОДКЛЮЧЕНИЕ</div>
+      <div class="setting">
+        <div><strong>Автоподключение</strong><small>Подключаться при запуске OceaniaVPN</small></div>
+        <button class="toggle on" data-setting="auto" aria-label="Автоподключение"><i></i></button>
+      </div>
+      <div class="setting" id="alwaysOnSetting" style="cursor:pointer">
+        <div><strong>Системный Kill Switch</strong><small>Открыть настройки Android для Always-on VPN и блокировки без VPN</small></div>
+        <span class="badge">ANDROID</span>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <div class="setting-label">МАРШРУТ</div>
+      <div class="setting">
+        <div><strong>Протокол</strong><small>Оптимальный режим для выбранного сервера</small></div>
+        <select class="select" id="protocol" style="width:132px">
+          <option>Auto</option><option>VLESS</option><option>Trojan</option><option>Hysteria2</option>
+        </select>
+      </div>
+      <div class="setting">
+        <div><strong>DNS</strong><small>Защищённое разрешение доменов</small></div>
+        <select class="select" id="dns" style="width:132px">
+          <option>Auto</option><option>Cloudflare</option><option>Quad9</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <div class="setting-label">ИНТЕРФЕЙС</div>
+      <div class="setting">
+        <div><strong>Анимации</strong><small>Волны и свечение интерфейса</small></div>
+        <button class="toggle on" data-setting="motion" aria-label="Анимации"><i></i></button>
+      </div>
+    </div>
+    <div class="sheet-foot">OceaniaVPN · Private ocean network</div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+let connected=false;
+let profiles=[];
+
+function toast(t){
+  const x=$("#toast");
+  x.textContent=t;x.style.display="block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>x.style.display="none",2400);
+}
+function nativeCall(fn,fallback){
+  try{return fn()}catch(e){return fallback}
+}
+function setConnection(state,error=""){
+  connected=state==="CONNECTED";
+  const isOn=state==="CONNECTED";
+  const connecting=state==="CONNECTING";
+  $("#status").textContent=isOn?"ЗАЩИЩЁННОЕ СОЕДИНЕНИЕ":connecting?"ПОДКЛЮЧЕНИЕ…":state==="ERROR"?"ОШИБКА СОЕДИНЕНИЯ":"СЕТЬ ГОТОВА";
+  $("#status").classList.toggle("connected",isOn);
+  $("#headline").textContent=isOn?"Волна подключена":connecting?"Поднимаем туннель":"Твоя волна";
+  $("#liveText").textContent=isOn?"Маршрут активен и защищён":connecting?"Подключение к Xray-core…":"Волна ожидает подключения";
+  $("#pulse").classList.toggle("on",isOn);
+  $("#power").disabled=connecting;
+  $("#power").setAttribute("aria-label",isOn?"Отключить VPN":"Подключить VPN");
+  $("#power small").textContent=isOn?"CONNECTED":connecting?"WAIT":"CONNECT";
+  if(state==="ERROR") toast(error||"Не удалось подключиться");
+}
+window.nativeConnectionState=(state,error)=>setConnection(state,error||"");
+function refreshCoreInfo(){
+  const version=nativeCall(()=>Android.xrayVersion(),"unknown");
+  const running=nativeCall(()=>Android.xrayRunning(),false);
+  const state=nativeCall(()=>Android.connectionState(),"DISCONNECTED");
+  $("#coreVersion").textContent=version||"unknown";
+  $("#coreState").textContent=state==="CONNECTING"?"STARTING":running?"ONLINE":"OFFLINE";
+  $("#coreStatus").className="core-status "+(state==="CONNECTING"?"connecting":running?"on":"");
+  $("#tunState").textContent=running?"ACTIVE":"READY";
+  $("#coreTransport").textContent=$("#protocol")?.value||"Auto";
+}
+function renderProfiles(){
+  const list=$("#serverList");
+  if(!list)return;
+  profiles=JSON.parse(nativeCall(()=>Android.getProfilesJson(),"[]"));
+  const selected=nativeCall(()=>Android.selectedProfile(),0);
+  list.innerHTML="";
+  if(!profiles.length){
+    const item=document.createElement("div");
+    item.className="card server active";
+    item.innerHTML='<div class="row"><div><div class="name">⚖️ Автобалансировщик</div><div class="meta">Сначала синхронизируй подписку</div></div><span class="badge">AUTO</span></div>';
+    list.appendChild(item);
+    return;
+  }
+  profiles.forEach((p,i)=>{
+    const card=document.createElement("div");
+    card.className="card server"+(i===selected?" active":"");
+    const desc=p.description||"Конфигурация из подписки";
+    const badge=i===0?"AUTO":"VLESS";
+    card.innerHTML=`<div class="row"><div><div class="name">${escapeHtml(p.remarks||("Профиль "+i))}</div><div class="meta">${escapeHtml(desc)}</div></div><span class="badge">${badge}</span></div>`;
+    card.onclick=()=>{
+      nativeCall(()=>Android.setSelectedProfile(i),null);
+      document.querySelectorAll(".server").forEach(x=>x.classList.remove("active"));
+      card.classList.add("active");
+      $("#selName").textContent=p.remarks||("Профиль "+i);
+      $("#selMeta").textContent=i===0?"Автобалансировщик · Xray":desc;
+      $("#route").textContent=(p.remarks||"Oceania")+" → You";
+      toast(connected?"Профиль сохранён · применится после переподключения":"Профиль выбран");
+    };
+    list.appendChild(card);
+  });
+  const current=profiles[selected]||profiles[0];
+  $("#selName").textContent=current.remarks||"Автобалансировщик";
+  $("#selMeta").textContent=selected===0?"Автобалансировщик · Xray":(current.description||"Конфигурация из подписки");
+  $("#route").textContent=(current.remarks||"Oceania")+" → You";
+}
+function escapeHtml(v){return String(v).replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+window.nativeProfilesUpdated=()=>renderProfiles();
+$("#power").onclick=()=>{
+  if(connected){nativeCall(()=>Android.disconnect(),null);}
+  else {nativeCall(()=>Android.connect(),null);}
+};
+$("#refresh").onclick=()=>{
+  const b=$("#refresh");
+  b.classList.add("spinning");
+  toast("Синхронизация подписки…");
+  nativeCall(()=>Android.syncConfig(),null);
+  setTimeout(()=>{b.classList.remove("spinning");renderProfiles();refreshCoreInfo();},1600);
+};
+$("#settings").onclick=()=>{
+  $("#modal").classList.add("show");
+  $("#modal").setAttribute("aria-hidden","false");
+  const auto=nativeCall(()=>Android.autoConnect(),true);
+  const motion=nativeCall(()=>Android.motionEnabled(),true);
+  document.querySelector('[data-setting="auto"]').classList.toggle("on",!!auto);
+  document.querySelector('[data-setting="motion"]').classList.toggle("on",!!motion);
+};
+function closeSettings(){
+  $("#modal").classList.remove("show");
+  $("#modal").setAttribute("aria-hidden","true");
+}
+$("#closeModal").onclick=closeSettings;
+$("#modal").onclick=e=>{if(e.target===$("#modal"))closeSettings()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSettings()});
+document.querySelector('[data-setting="auto"]').onclick=()=>{
+  const t=document.querySelector('[data-setting="auto"]');
+  t.classList.toggle("on");
+  nativeCall(()=>Android.setAutoConnect(t.classList.contains("on")),null);
+  toast("Автоподключение: "+(t.classList.contains("on")?"включено":"выключено"));
+};
+document.querySelector('[data-setting="motion"]').onclick=()=>{
+  const t=document.querySelector('[data-setting="motion"]');
+  t.classList.toggle("on");
+  nativeCall(()=>Android.setMotionEnabled(t.classList.contains("on")),null);
+  document.body.style.setProperty("--motion",t.classList.contains("on")?"1":"0");
+  toast("Анимации: "+(t.classList.contains("on")?"включены":"выключены"));
+};
+$("#alwaysOnSetting").onclick=()=>nativeCall(()=>Android.openVpnSettings(),null);
+$("#protocol").onchange=e=>{toast("Протокол: "+e.target.value);refreshCoreInfo()};
+$("#dns").onchange=e=>toast("DNS: "+e.target.value);
+$("#coreInfo").onclick=()=>{refreshCoreInfo();toast("Xray-core: "+($("#coreState").textContent||"OFFLINE"))};
+$("#coreSettings").onclick=()=>nativeCall(()=>Android.openVpnSettings(),null);
+
+renderProfiles();
+refreshCoreInfo();
+setConnection(nativeCall(()=>Android.isConnected()?"CONNECTED":"DISCONNECTED","DISCONNECTED"));
+setInterval(()=>{
+  const state=nativeCall(()=>Android.isConnected()?"CONNECTED":"DISCONNECTED",connected?"CONNECTED":"DISCONNECTED");
+  if(state!=="CONNECTED" && state!=="DISCONNECTED")return;
+  if(state!==$("#status").dataset.lastState){$("#status").dataset.lastState=state;setConnection(state);refreshCoreInfo()}
+},1000);
+</script>
+</body>
+</html>
